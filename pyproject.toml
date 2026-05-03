@@ -119,6 +119,15 @@ video = [
     "ffmpeg-python>=0.2.0",
 ]
 
+# browser: enables Layer 13 (BrowserContentAnalyzer — DOM-level injection detection).
+# Covers CSS-hidden injection, URL injection, form injection, and inline JS analysis.
+# lxml is strongly recommended for parse speed; falls back to html.parser when absent.
+# Install: pip install "ethicore-engine-guardian[browser]"
+browser = [
+    "beautifulsoup4>=4.12.0",
+    "lxml>=4.9.0",
+]
+
 # ml: enables full transformer-based ML inference in MLInferenceEngine.
 # Without these packages the engine runs its built-in heuristic fallback,
 # which is still effective but less accurate than a fine-tuned classifier.
@@ -143,6 +152,8 @@ all = [
     "scipy>=1.7.0",
     "imagehash>=4.3.1",
     "opencv-python-headless>=4.8.0",
+    "beautifulsoup4>=4.12.0",
+    "lxml>=4.9.0",
 ]
 
 [project.urls]
