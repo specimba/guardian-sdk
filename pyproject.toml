@@ -128,6 +128,22 @@ browser = [
     "lxml>=4.9.0",
 ]
 
+# voice: enables Layer 14 (VoiceAnalyzer — audio/voice threat detection).
+# Covers ultrasonic command injection, adversarial audio fingerprinting,
+# transcript cross-verification via Whisper, silence/noise injection, and
+# prosody anomaly scoring.  Also handles video files — audio is extracted
+# automatically via ffmpeg-python when a video path is supplied.
+# Install: pip install "ethicore-engine-guardian[voice]"
+# Note: faster-whisper requires the ctranslate2 binary (~200 MB on first run).
+#       Override Whisper model size with env var: GUARDIAN_WHISPER_MODEL=tiny
+voice = [
+    "librosa>=0.10.0",
+    "soundfile>=0.12.0",
+    "pydub>=0.25.0",
+    "faster-whisper>=1.0.0",
+    "ffmpeg-python>=0.2.0",  # shared with [video]; also needed for video audio extraction
+]
+
 # ml: enables full transformer-based ML inference in MLInferenceEngine.
 # Without these packages the engine runs its built-in heuristic fallback,
 # which is still effective but less accurate than a fine-tuned classifier.
@@ -156,6 +172,11 @@ all = [
     "opencv-python-headless>=4.8.0",
     "beautifulsoup4>=4.12.0",
     "lxml>=4.9.0",
+    # voice (Layer 14)
+    "librosa>=0.10.0",
+    "soundfile>=0.12.0",
+    "pydub>=0.25.0",
+    "faster-whisper>=1.0.0",
 ]
 
 [project.urls]
