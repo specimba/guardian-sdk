@@ -53,6 +53,11 @@ With video frame analysis (also requires `ffmpeg` in PATH):
 pip install "ethicore-engine-guardian[video]"
 ```
 
+With voice/audio threat analysis (ultrasonic injection, transcript verification, prosody anomaly):
+```bash
+pip install "ethicore-engine-guardian[voice]"
+```
+
 Everything at once:
 ```bash
 pip install "ethicore-engine-guardian[all]"
@@ -215,6 +220,9 @@ The community edition covers the five most prevalent categories. The API covers 
 | **Tool output scanning** | — | ✅ | ✅ | ✅ |
 | **LangChain callback integration** | — | ✅ | ✅ | ✅ |
 | **Visual analysis (images + video)** | — | ✅ | ✅ | ✅ |
+| **Browser content analysis** | — | ✅ | ✅ | ✅ |
+| **Voice / audio threat analysis** | — | ✅ | ✅ | ✅ |
+| **Autonomous payment protection** | — | ✅ | ✅ | ✅ |
 | **Cross-modal threat fusion** | — | ✅ | ✅ | ✅ |
 | **Post-flight OutputAnalyzer** | ✅ | ✅ | ✅ | ✅ |
 | **Adversarial learning** | ✅ hash-based | ✅ embedding-based | ✅ embedding-based | ✅ embedding-based |
