@@ -9,7 +9,7 @@ execute in your pipeline.**
 [![PyPI version](https://badge.fury.io/py/ethicore-engine-guardian.svg)](https://pypi.org/project/ethicore-engine-guardian/)
 [![PyPI Downloads](https://img.shields.io/pypi/dm/ethicore-engine-guardian.svg)](https://pypi.org/project/ethicore-engine-guardian/)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License: BSL 1.1](https://img.shields.io/badge/License-BSL_1.1-blue.svg)](LICENSE)
 
 ---
 
@@ -486,10 +486,10 @@ ETHICORE_API_KEY="eg_live_..." pytest tests/ -v
 
 ---
 
-## License
 
-**Framework code** (`ethicore_guardian/` Python sources, tests, scripts):
-MIT License — see [LICENSE](LICENSE).
+## License Update
+
+We have updated the Guardian SDK license from MIT to the **Business Source License 1.1 (BSL 1.1)** with a change date of May 7, 2030 (when it converts to Apache 2.0). This change keeps the full source code visible and developer-friendly for personal use, internal tools, research, open-source projects, and non-competing applications — while protecting our business moat against direct competitors who want to take the core technology and sell a competing AI security or threat detection product/service. Free for builders, licensed for competitors. See [LICENSE](LICENSE) for the full BSL 1.1 terms and [COMMERCIAL_LICENSE.md](COMMERCIAL_LICENSE.md) for commercial usage options.
 
 **Threat library and ONNX models** (platform-managed, API access only):
 Proprietary — see [API-LICENSE](API-LICENSE).
