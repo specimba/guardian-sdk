@@ -275,6 +275,99 @@ community mode (5 categories, local hash-based inference).
 
 ---
 
+## Calling the API Directly
+
+No SDK required. If you prefer raw HTTP — or are integrating from a language or
+environment without the Python package — the Guardian API is two endpoints.
+
+### Pre-flight: scan an input before it reaches your model
+
+```python
+import os, requests
+
+GUARDIAN_URL = os.environ.get("ETHICORE_API_URL", "https://api.oraclestechnologies.com")
+HEADERS = {
+    "Authorization": f"Bearer {os.environ['ETHICORE_API_KEY']}",
+    "Content-Type": "application/json",
+}
+
+result = requests.post(
+    f"{GUARDIAN_URL}/v1/guardian/analyze",
+    json={"text": user_input, "source_type": "user_input"},
+    headers=HEADERS,
+    timeout=30,
+).json()
+
+if result["recommended_action"] in ("BLOCK", "CHALLENGE"):
+    # Input is adversarial — do not pass to your model
+    print(f"Blocked: {result['threat_level']} — {result['threat_types']}")
+else:
+    # Safe — proceed
+    response = call_your_model(user_input)
+```
+
+### Post-flight: scan the model's response before returning it
+
+```python
+output_result = requests.post(
+    f"{GUARDIAN_URL}/v1/guardian/analyze/response",
+    json={
+        "response": response,
+        "original_input": user_input,
+        "preflight_result": result,   # pass the pre-flight result through
+    },
+    headers=HEADERS,
+    timeout=30,
+).json()
+
+if output_result["suppressed"]:
+    # Model was manipulated — return the safe replacement instead
+    reply = output_result["safe_response"]
+else:
+    reply = response
+```
+
+### Wrapping agentic tool calls
+
+The same two endpoints protect the agentic loop. Scan the tool call before it
+executes, and scan the output before it re-enters the agent's context.
+
+```python
+def protected_tool_call(tool_name: str, tool_args: dict, tool_fn):
+    # Pre-flight — catch injected tool calls before execution
+    pre = requests.post(
+        f"{GUARDIAN_URL}/v1/guardian/analyze",
+        json={
+            "text": f"Tool: {tool_name}\nArgs: {tool_args}",
+            "source_type": "tool_call",
+        },
+        headers=HEADERS, timeout=30,
+    ).json()
+
+    if pre["recommended_action"] in ("BLOCK", "CHALLENGE"):
+        raise RuntimeError(f"Guardian blocked tool call '{tool_name}': {pre['threat_types']}")
+
+    result = tool_fn(**tool_args)
+
+    # Post-flight — catch poisoned tool outputs before they re-enter context
+    post = requests.post(
+        f"{GUARDIAN_URL}/v1/guardian/analyze/response",
+        json={
+            "response": str(result),
+            "original_input": f"Tool: {tool_name}",
+            "preflight_result": pre,
+        },
+        headers=HEADERS, timeout=30,
+    ).json()
+
+    if post["suppressed"]:
+        raise RuntimeError(f"Guardian suppressed tool output from '{tool_name}': {post['signals_detected']}")
+
+    return result
+```
+
+---
+
 ## Provider Examples
 
 Guardian wraps your existing AI client. No architectural changes required.
