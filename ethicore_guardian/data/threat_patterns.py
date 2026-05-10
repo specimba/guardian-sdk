@@ -186,6 +186,46 @@ THREAT_PATTERNS: Dict[str, Any] = {
     },
 
     # ------------------------------------------------------------------
+    # encodingEvasion — Layer 16 community-tier pattern coverage
+    # Detects the PRESENCE of Morse code and Base64 encoding in text.
+    # Community tier can detect the encoding's presence but cannot decode
+    # and re-analyze (that requires the API-tier EncodingDetector layer).
+    # ------------------------------------------------------------------
+    "encodingEvasion": {
+        "patterns": [
+            # Morse code detection — sequences of dots, dashes, slashes, and spaces.
+            # Minimum 5 groups to avoid false positives on ellipses.
+            r"(?:[.\-]{1,8}\s+){5,}(?:[.\-]{1,8})",
+            # Base64 substantial payload detection — at least 30 chars long
+            # to avoid flagging short tokens, small JWTs, and legitimate IDs.
+            r"(?<![A-Za-z0-9+/])[A-Za-z0-9+/]{30,}={0,2}(?![A-Za-z0-9+/=])",
+        ],
+        "severity": ThreatSeverity.HIGH,
+        "weight": 75,
+        "description": (
+            "Suspected encoding evasion — Morse code or Base64 payload detected. "
+            "Community tier detects presence only; API tier decodes and re-analyzes. "
+            "May indicate an attempt to hide adversarial instructions in an encoding "
+            "that LLMs can decode but basic pattern matching cannot assess directly."
+        ),
+        "semanticFingerprint": [
+            "morse code hidden instruction",
+            "base64 encoded prompt injection",
+            "encoded jailbreak payload",
+            "obfuscated adversarial instruction",
+        ],
+        "contextHints": {
+            "escalators": ["decode", "morse", "base64", "binary", "hex"],
+            "mitigators": ["data URI", "image", "audio file", "media"],
+        },
+        "falsePositiveRisk": FalsePositiveRisk.MEDIUM,
+        "mitigationStrategy": (
+            "Use API tier for full decode-and-reanalyze capability. "
+            "Community tier should CHALLENGE for human review."
+        ),
+    },
+
+    # ------------------------------------------------------------------
     # systemPromptLeaks — OWASP LLM07 (System Prompt Leakage)
     # Attempts to extract the model's system prompt or initial instructions.
     # ------------------------------------------------------------------
@@ -213,6 +253,7 @@ THREAT_PATTERNS: Dict[str, Any] = {
         "falsePositiveRisk": FalsePositiveRisk.MEDIUM,
         "mitigationStrategy": "Distinguish between capability questions and extraction attempts",
     },
+
 }
 
 

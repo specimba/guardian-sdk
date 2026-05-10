@@ -202,7 +202,7 @@ Guardian protects your AI system from adversarial inputs designed to:
 - **Coordinate across modalities** — split-channel attacks that distribute threat signals across text and visual inputs, each appearing benign in isolation *(API)*
 - **Hide payloads in video** — injection content embedded across video frames, including temporally recurring signals designed to survive frame-level filtering *(API)*
 
-The community edition covers the five most prevalent categories. The API covers 50+.
+The community edition covers the six most prevalent categories. The API covers 80+.
 
 ---
 
@@ -210,10 +210,10 @@ The community edition covers the five most prevalent categories. The API covers 
 
 | | Community | API — Free | API — Pro | API — ENT |
 |---|---|---|---|---|
-| **Threat categories** | 5 | 50+ | 50+ | 50+ |
-| **Regex patterns** | 18 | 500+ | 500+ | 500+ |
+| **Threat categories** | 6 | 80+ | 80+ | 80+ |
+| **Regex patterns** | 26 | 700+ | 700+ | 700+ |
 | **Semantic model** | Hash-based fallback | Full ONNX MiniLM-L6-v2 | Full ONNX MiniLM-L6-v2 | Full ONNX MiniLM-L6-v2 |
-| **Semantic fingerprints** | Runtime-only | ~500 pre-loaded + runtime | ~500 pre-loaded + runtime | ~500 pre-loaded + runtime |
+| **Semantic fingerprints** | Runtime-only | 1,000+ pre-loaded + runtime | 1,000+ pre-loaded + runtime | 1,000+ pre-loaded + runtime |
 | **RAG / indirect injection** | — | ✅ | ✅ | ✅ |
 | **Agentic pipeline protection** | — | ✅ | ✅ | ✅ |
 | **Tool call validation** | — | ✅ | ✅ | ✅ |
@@ -232,7 +232,7 @@ The community edition covers the five most prevalent categories. The API covers 
 | **Price** | Free | Free | Paid | Contact us |
 
 **Community** is the open-source, pip-installable SDK. Inference runs locally using a
-hash-based fallback covering the five most common attack categories. No API key, no
+hash-based fallback covering the six most prevalent attack categories. No API key, no
 account required.
 
 **API (Free & Pro)** routes requests through the Ethicore Engine™ platform. The full
@@ -270,8 +270,8 @@ Guardian(config=GuardianConfig(api_key="eg_live_..."))
 ```
 
 The SDK uses your key to authenticate against the Ethicore Engine™ platform and
-unlock the full threat library (50+ categories). Without a key, the SDK falls back to
-community mode (5 categories, local hash-based inference).
+unlock the full threat library (80+ categories). Without a key, the SDK falls back to
+community mode (6 categories, local hash-based inference).
 
 ---
 
